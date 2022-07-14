@@ -1,24 +1,34 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import {
+  AuthWrapper,
+  Dashboard,
+  Error,
+  Login,
+  PrivateRoute,
+} from "./pages/index"
+//components
+import Navbar from "./components/Navbar.js"
+import {useUserContext} from "./context/context"
+import {BrowserRouter,Routes,Route} from 'react-router-dom'
 
 function App() {
+  let {user} = useUserContext();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthWrapper>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }/>
+          <Route path='login' element={<Login />} />
+          <Route path='*' element={<Error />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthWrapper>
   );
 }
 
